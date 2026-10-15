@@ -8,3 +8,6 @@ __pycache__/
 *.db
 .vercel
 dist/
+demo/.browser/
+demo/.profiles/
+demo/.dejo.db

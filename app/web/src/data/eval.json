@@ -1,9 +1,13 @@
 {
-  "note": "Filled by `guard-eval` (app/guard). Until it runs, every number is null and the site shows a dash.",
-  "attacks": null,
-  "unsafe_tool_name_policy": null,
-  "unsafe_dejo_guard": null,
-  "false_hold_rate": null,
-  "journeys": null,
-  "ran_at": null
+  "note": "Copied by scripts/sync_numbers.py from evidence/eval.json (run 2026-10-15T20:58:19+0000).",
+  "attacks": 8,
+  "unsafe_none": 8,
+  "unsafe_tool_name_policy": 8,
+  "unsafe_dejo_guard": 0,
+  "false_hold_rate": 0.0,
+  "false_hold_rate_names": 0.0,
+  "strict_names_false_hold_rate": 31.3,
+  "journeys": 16,
+  "journey_steps": 68,
+  "ran_at": "2026-10-15T20:58:19+0000"
 }

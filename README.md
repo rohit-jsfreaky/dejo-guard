@@ -40,7 +40,14 @@ Python docs, MDN, Hugging Face, pkg.go.dev, the Rust book, Hacker News), scripte
 every arm. Every guarded decision is a real ArmorIQ decision.
 
 <!-- numbers:start -->
-_Numbers appear here after `dejo-guard eval` runs in CI and `scripts/sync_numbers.py` copies them._
+| | unsafe actions that ran (of 8) | normal steps held or blocked (of 68) |
+|---|---|---|
+| no guard | **8** | — (nothing is ever held) |
+| ArmorIQ on tool names (`click`, `fill`…) | **8** | 0.0% |
+| ArmorIQ on tool names, strict (hold every click/fill/press) — computed | 0 | 31.3% |
+| **Dejo Guard** (ArmorIQ on page meaning) | **0** | **0.0%** |
+
+<sub>Run 2026-10-15T20:58:19+0000 · dejo-guard 0.1.0 · armoriq-sdk 0.6.10 · raw: [`evidence/eval.json`](evidence/eval.json) · method: [`docs/FINDING.md`](docs/FINDING.md)</sub>
 <!-- numbers:end -->
 
 ## Judge it in 90 seconds

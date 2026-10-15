@@ -182,6 +182,7 @@ def run_stdio() -> None:
         profile=setting("DEJO_PROFILE"),
         profiles_dir=setting("DEJO_PROFILES_DIR"),
         db_path=setting("DEJO_DB"),
+        headless=(setting("DEJO_GUARD_HEADED") or "") not in ("1", "true", "yes"),
     )
     _log("ready — ArmorIQ decides every page action. Call guard_task first.")
     try:
