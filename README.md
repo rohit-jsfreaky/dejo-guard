@@ -59,7 +59,9 @@ every arm. Every guarded decision is a real ArmorIQ decision.
 3. **Open the [attack lab](https://dejo-guard.vercel.app/shop/lab)** — 8 pages built to fool an agent, each with the
    class the guard gives it.
 4. **Read [the policy](policy/dejo-guard-boundary.yaml)** — that file, active in ArmorIQ, is where allow/hold/block live.
-5. **Proof it's real:** [`evidence/probe-day0.md`](evidence/probe-day0.md) (first allow/block/hold/drift on the
+5. **Proof it's real:** [`evidence/remove-a-rule.md`](evidence/remove-a-rule.md) (rule removed in ArmorIQ → the same
+   click goes through → rule back → held again), [`evidence/verify.txt`](evidence/verify.txt) (16/16 claims PASS),
+   [`evidence/probe-day0.md`](evidence/probe-day0.md) (first allow/block/hold/drift on the
    platform), [`evidence/live/`](evidence/live) (end-to-end runs, including a hold approved in ArmorIQ that then placed
    sandbox order `DG-MV9Z9YNI`), [`evidence/eval.json`](evidence/eval.json).
 
@@ -68,10 +70,17 @@ every arm. Every guarded decision is a real ArmorIQ decision.
 ```bash
 pip install dejo-guard
 playwright install chromium          # the browser, about 150 MB
-armoriq login                        # your own free ArmorIQ org
-dejo-guard init                      # checks the setup, prints the next steps
-dejo-guard policy --org <org id> --agent <agent id> > policy.yaml   # import it in ArmorIQ, then Activate
+armoriq login                        # your own free ArmorIQ org (comes with dejo-guard)
+dejo-guard init                      # checks everything, writes ~/.dejo-guard/policy.yaml for your org
+```
+
+`init` then names the two things only the ArmorIQ dashboard can do (its API needs your dashboard login for them):
+add an agent called `dejo-guard-agent` (Inventory → Agents → Add agent), run `dejo-guard init --agent <its id>`, and
+import + activate the policy file (Policies → Import YAML). Then:
+
+```bash
 claude mcp add dejo-guard -- dejo-guard
+dejo-guard verify                    # PASS/FAIL per claim, live against your ArmorIQ
 ```
 
 Then ask your agent: *“Compare prices for Atomic Habits on dejo-guard.vercel.app/shop, then buy the cheapest.”*

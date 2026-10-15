@@ -24,6 +24,7 @@ from dejo import actions
 from dejo.executor import Executor
 from dejo.operations import ActionFailed, Session
 
+from . import userplan
 from .armor import Decision, Gate
 from .classes import DEFAULT_PLAN, classify, network_class
 from .facts import ELEMENT_FACTS_JS, FRAME_PAYMENT_JS, PageFacts, from_element, site_of
@@ -113,7 +114,9 @@ class Guard:
     # ------------------------------------------------------------- the task
 
     def start_task(self, goal: str, sites: set[str], classes: tuple[str, ...] | None = None) -> dict[str, Any]:
-        task = self.gate.start_task(goal, classes or plan_for(goal), sites)
+        # guard.yaml may add classes for these sites or words — to the PLAN only; the policy still decides them.
+        classes = tuple(dict.fromkeys((*(classes or plan_for(goal)), *userplan.extra_classes(goal, sites))))
+        task = self.gate.start_task(goal, classes, sites)
         self.feed.write({"task_id": task.id, "goal": goal, "action": "plan", "cls": ",".join(task.classes),
                          "decision": "refused" if task.refused else "signed", "reason": task.refused,
                          "plan_id": task.plan_id, "because": f"sites: {', '.join(sorted(sites)) or 'any'}"})

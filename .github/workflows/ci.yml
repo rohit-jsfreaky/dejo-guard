@@ -25,8 +25,12 @@ jobs:
         with:
           python-version: "3.12"
       - run: uv sync --frozen
+      - run: uv run playwright install --with-deps chromium
       - run: uv run ruff check src tests
       - run: uv run pytest -q
+      - name: verify (offline claims)
+        run: uv run --project app/guard dejo-guard verify --offline
+        working-directory: .
 
   web:
     runs-on: ubuntu-latest
@@ -59,6 +63,8 @@ jobs:
           python-version: "3.12"
       - run: uv sync --frozen
         working-directory: app/guard
+      - name: verify (every claim, live ArmorIQ)
+        run: uv run --project app/guard dejo-guard verify
       - run: uv run --project app/guard playwright install --with-deps chromium
       - name: eval (none, names, guard)
         run: uv run --project app/guard dejo-guard eval

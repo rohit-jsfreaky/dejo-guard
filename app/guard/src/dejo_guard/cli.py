@@ -10,6 +10,7 @@
 from __future__ import annotations
 
 import argparse
+import contextlib
 import json
 import sys
 import time
@@ -26,14 +27,18 @@ def main(argv: list[str] | None = None) -> int:
     share = sub.add_parser("share", help="make a hosted live feed and stream every decision to it")
     share.add_argument("--site", default="https://dejo-guard.vercel.app")
     share.add_argument("--label", default=None)
-    sub.add_parser("init", help="check the setup and print the next steps")
+    ini = sub.add_parser("init", help="check the setup, write the policy for your org, print the next steps")
+    ini.add_argument("--agent", help="the dejo-guard-agent id from the ArmorIQ dashboard")
+    ver = sub.add_parser("verify", help="one PASS/FAIL line per claim (live ArmorIQ checks unless --offline)")
+    ver.add_argument("--offline", action="store_true")
     ev = sub.add_parser("eval", help="run the eval: attack lab + journeys, 3 arms -> evidence/eval.json")
     ev.add_argument("arms", nargs="*", help="none, names, guard (default: all)")
     pol = sub.add_parser("policy", help="print the ArmorIQ policy YAML")
     pol.add_argument("--org", default="<your org id>")
     pol.add_argument("--agent", default="<dejo-guard-agent id>")
-    plan = sub.add_parser("plan", help="show what a task's words unlock")
+    plan = sub.add_parser("plan", help="show what a task's words (and guard.yaml) unlock")
     plan.add_argument("task")
+    plan.add_argument("--site", action="append", default=[], help="a site the task names (guard.yaml sites)")
     feed = sub.add_parser("feed", help="print the latest decisions")
     feed.add_argument("-n", type=int, default=20)
     feed.add_argument("--json", action="store_true")
@@ -55,9 +60,12 @@ def main(argv: list[str] | None = None) -> int:
         sys.stdout.write(policy_yaml(args.org, args.agent))
         return 0
     if args.command == "plan":
+        from . import userplan
+        from .facts import site_of
         from .guard import plan_for
 
-        print(" ".join(plan_for(args.task)))
+        sites = {site_of(s) for s in args.site}
+        print(" ".join(dict.fromkeys((*plan_for(args.task), *userplan.extra_classes(args.task, sites)))))
         return 0
     if args.command == "feed":
         from .feed import Feed
@@ -72,7 +80,11 @@ def main(argv: list[str] | None = None) -> int:
                   f"{(r['reason'] or '')[:60]}")
         return 0
     if args.command == "init":
-        return _init()
+        return _init(args.agent)
+    if args.command == "verify":
+        from .verify import main as verify_main
+
+        return verify_main(["--offline"] if args.offline else [])
     if args.command == "eval":
         from .eval import main as eval_main
 
@@ -100,21 +112,29 @@ def _share(site: str, label: str | None) -> int:
     return 0
 
 
-def _init() -> int:
+def _init(agent_uuid: str | None = None) -> int:
+    """Check the setup, fill in what `armoriq login` already knows, and print the two dashboard steps left."""
     ok = True
     key = config.setting("ARMORIQ_API_KEY")
-    if not key:
-        try:
-            from armoriq_sdk.credentials import load_credentials
+    org = config.setting("ARMORIQ_ORG_ID")
+    creds = None
+    with contextlib.suppress(Exception):  # no `armoriq login` yet is fine: the lines below say what is missing
+        from armoriq_sdk.credentials import load_credentials
 
-            key = getattr(load_credentials(), "apiKey", None)
-        except Exception:  # noqa: BLE001
-            key = None
-    print(f"ArmorIQ key ........ {'found' if key else 'MISSING — run `armoriq login` or set ARMORIQ_API_KEY'}")
+        creds = load_credentials()
+    key = key or getattr(creds, "apiKey", None)
+    org = org or getattr(creds, "orgId", None) or None
+    print(f"ArmorIQ key ........ {'found' if key else 'MISSING — run `armoriq login` (or set ARMORIQ_API_KEY)'}")
+    print(f"ArmorIQ org ........ {org or 'unknown — `armoriq login` fills it, or set ARMORIQ_ORG_ID'}")
     ok &= bool(key)
     print(f"ArmorIQ agent ...... {config.agent_id()}")
     print(f"Holds filed as ..... {config.requester()}  (not an org member, so you can approve them)")
     print(f"Decision feed ...... {config.feed_path()}")
+    from . import userplan
+    from .policy import policy_yaml
+
+    made = userplan.write_default()
+    print(f"Plan additions ..... {userplan.PATH}{'  (written, all empty)' if made else ''}")
     try:
         import dejo  # noqa: F401
 
@@ -122,10 +142,18 @@ def _init() -> int:
     except ImportError:
         print("Dejo ............... MISSING")
         ok = False
+    policy_file = config.HOME / "policy.yaml"
+    policy_file.parent.mkdir(parents=True, exist_ok=True)
+    policy_file.write_text(policy_yaml(org or "<your org id>", agent_uuid or "<dejo-guard-agent id>"), encoding="utf-8")
+    print(f"Policy ............. {policy_file}{'' if agent_uuid else '  (agent id still a placeholder)'}")
     print()
-    print("Next:")
-    print("  1. dejo-guard policy --org <org id> --agent <agent id>  > policy.yaml")
-    print("     import it on platform.armoriq.ai → Policies → Import YAML, then Activate")
-    print("  2. claude mcp add dejo-guard -- dejo-guard")
-    print('  3. ask your agent: "compare prices for <a book> on <a shop>"')
+    print("Two steps on platform.armoriq.ai (its API needs your dashboard login for these):")
+    if not agent_uuid:
+        print(f"  1. Inventory → Agents → Add agent → Connect by URL. Name: {config.agent_id()}, URL: any https URL.")
+        print("     Copy the agent id it shows, then run:  dejo-guard init --agent <that id>")
+    print(f"  {'1' if agent_uuid else '2'}. Policies → Import YAML → paste {policy_file.name} → Import → Activate.")
+    print()
+    print("Then:  claude mcp add dejo-guard -- dejo-guard")
+    print('       ask your agent: "compare prices for Atomic Habits on dejo-guard.vercel.app/shop, then buy the cheapest"')
+    print("       check it any time with:  dejo-guard verify")
     return 0 if ok else 1

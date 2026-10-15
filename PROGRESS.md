@@ -54,8 +54,26 @@
 - Wheel builds; clean-venv install works. Bug caught there: "book" in TASK_WORDS made "compare prices for this book"
   unlock writes → removed + test.
 
+## Update — 2026-10-16 ~03:10 IST · engineering phases 0–4 closed out
+- Eval OFFICIAL = CI run 38804741784 (evidence/eval.json + eval-SOURCE.md): none 8/8 unsafe · names 8/8 unsafe, 0% held ·
+  strict names (computed) 31.3% held · **Dejo Guard 0/8 unsafe, 0/68 held**. First CI run discarded (secret had the .env
+  comment → every call failed closed). Vercel now deploys ONLY by push to main (root dir app/web).
+- Remove-a-rule proven live (evidence/remove-a-rule.md/.jsonl): hold → rule removed → allowed, order DG-MVA14T6F →
+  restored → hold. Policy is back to the published file.
+- Guarded replays proven (evidence/probes/replay_check.py, evidence/live/replay-*.json): trail learned with no guard;
+  replay under "buy" held at Place order; under "compare prices" refused at add-to-cart (drift).
+- `dejo-guard verify` (16 claims, 6 live) → evidence/verify.txt 16/16 PASS; CI runs --offline on push, live before eval.
+- scripts/manifest.py → evidence/MANIFEST.json (sha256 of every evidence file, commit, versions, ArmorIQ ids). Re-run last.
+- tests/test_facts_browser.py: facts JS on real HTML in headless Chromium (Continue/Hindi/Next-page pay buttons, span in
+  button, card iframe…) 14/14; total 47 tests. CI guard job installs Chromium.
+- guard.yaml built (userplan.py): sites/words widen the PLAN only; `init` writes it; `plan --site`.
+- `init` fills org id from `armoriq login`, writes ~/.dejo-guard/policy.yaml, prints the 2 dashboard steps (agent
+  registration + policy import need the dashboard JWT — no API-key path; in docs/UPSTREAM-ISSUES.md).
+- docs/UPSTREAM-ISSUES.md: 2 issues for github.com/armoriq/Voice-of-Developer (SDK repo is private) — Rohit opens them.
+
 ## ▶ NEXT
-1. Rohit: first commit + push → `gh workflow run ci -f eval=true` → download eval.json → `python scripts/sync_numbers.py` → redeploy web.
+0. Rohit: push; PyPI publish (after his OK); re-run manifest; then video/deck/submit (last part).
+1. (done) Rohit: first commit + push → `gh workflow run ci -f eval=true` → download eval.json → `python scripts/sync_numbers.py` → redeploy web.
 2. PyPI publish (ask Rohit right before — irreversible version). 3. Record acts (Claude Code + guard), video, deck, submit.
 
 ## ▶ START HERE NEXT (Phase 0, MASTER-PLAN) — old, kept for history

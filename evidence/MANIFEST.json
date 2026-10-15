@@ -1,0 +1,113 @@
+{
+  "written": "2026-10-16T02:41:11+0530",
+  "commit": "0d0a8891577a3a4fa9e254599c4e39c13a89dd66",
+  "uncommitted_changes": true,
+  "versions": {
+    "dejo": "0.1.1",
+    "dejo-mcp": "0.1.1",
+    "armoriq-sdk": "0.6.10",
+    "mcp": "1.30.0",
+    "playwright": "1.64.0"
+  },
+  "armoriq": {
+    "org": "157f1d31-83ad-46e9-90f4-2536f6130b68",
+    "agent": {
+      "dejo-guard-agent": "9255530a-72a5-46c6-845e-ce6cfb8c1540",
+      "dejo-toolname-baseline": "1adda49e-ad9d-42ae-9d62-81250ad75282"
+    },
+    "policies": {
+      "dejo-guard-boundary": "fc6474c7-eedc-4a8c-916b-f2bb516b52d1",
+      "toolname-baseline": "9f76ad4f-88a4-47cb-989e-ae6a75379f32"
+    },
+    "mcp_servers": {
+      "sandbox-shop": "ada0215a-d8cd-40fa-ac2e-3c16ba32bc10",
+      "dejo": "46bbc80d-106f-4612-b220-4e859e19d3d6"
+    }
+  },
+  "files": {
+    "evidence/eval-SOURCE.md": {
+      "sha256": "3ab1221e3f0af06ba2e4df56235b95224d4d65a9238b505867ce04920a80a055",
+      "bytes": 503
+    },
+    "evidence/eval.json": {
+      "sha256": "c8d18c40c3946d6b8e7b6bd8f497564f38d69b8edeba84b1a36eff2bc87b8384",
+      "bytes": 83399
+    },
+    "evidence/live/e2e-20261016-013815.json": {
+      "sha256": "db3351b4c7c6c89d1e0b48f04c3a9ece618716a1a310a67f8c20aab68f1c86e3",
+      "bytes": 18585
+    },
+    "evidence/live/e2e-20261016-014205.json": {
+      "sha256": "f2aab21d78c32d2e847cc89568777bc944a4f900c1219d73ce129016b2e49179",
+      "bytes": 20402
+    },
+    "evidence/live/e2e-20261016-014530.json": {
+      "sha256": "a416d1e8c1a3968616f25a1c2217cedc2486f76202030aeeb47f4f240af7eaf5",
+      "bytes": 19553
+    },
+    "evidence/live/e2e-20261016-014751.json": {
+      "sha256": "4ecc01b32d88bca45f60dfe875bf87864986637642e44fb6999b0e0db9dfa34a",
+      "bytes": 18846
+    },
+    "evidence/live/replay-20261016-023929.json": {
+      "sha256": "da3871a767c0ee239ef6196570e0cda6d3bce920889ef4e41093e1b215a8cb5e",
+      "bytes": 12360
+    },
+    "evidence/probe-2026-10-16.md": {
+      "sha256": "9e0cd4b011f64b55904dfa1d3976c85de04edcfcecc813924f6f79d3271b7977",
+      "bytes": 1749
+    },
+    "evidence/probe-day0.md": {
+      "sha256": "38c0804fcf1279606f660d87d597db4b0c9c9e2b07ae7abcd515234d30d8beeb",
+      "bytes": 2566
+    },
+    "evidence/probes/day0_plan.py": {
+      "sha256": "65f36646cf934e319f6fb0c50d1ff12456e8cd97f3b29cd28390e0946b54b11e",
+      "bytes": 951
+    },
+    "evidence/probes/e2e_shop.py": {
+      "sha256": "1bfe08e749ea6e22603b540e4cc5f832f74634170968d372a7c70324bc545a01",
+      "bytes": 4385
+    },
+    "evidence/probes/iap_enforce.py": {
+      "sha256": "b32505d3ef32c88e97c2dff312f26cece36dfe4597fcbbed28e6fb15a52ad278",
+      "bytes": 882
+    },
+    "evidence/probes/latency.py": {
+      "sha256": "777922f245b2420e76c9ef5d3dbbc957fb2aea6e4977f8dffed2776882dff888",
+      "bytes": 1118
+    },
+    "evidence/probes/local.py": {
+      "sha256": "29a47a0821076290979a2dc526c177446b46c3a3fa1477d973c547cc2b0b76de",
+      "bytes": 1318
+    },
+    "evidence/probes/profile.py": {
+      "sha256": "b6a7c9fbfb913d7a69d064c292296b427022d8ce05ba70adcd781440b95bdd07",
+      "bytes": 2007
+    },
+    "evidence/probes/remove_rule.py": {
+      "sha256": "13c3f5f1bbf872922c4aae38a0a87caec20e325d6c731d423330ac54bfecd7c8",
+      "bytes": 3610
+    },
+    "evidence/probes/replay_check.py": {
+      "sha256": "becf1fcc80dcbac0b5d751d322b9166b25bc474a8afdb2b61abb922568bb47f2",
+      "bytes": 3588
+    },
+    "evidence/remove-a-rule.jsonl": {
+      "sha256": "c5c3d8c735f00f2020043dba677474e5c53ffcccea85820f633bbbdd1e6730bd",
+      "bytes": 779
+    },
+    "evidence/remove-a-rule.md": {
+      "sha256": "a6341cb37be35862a32371df7a445b594778035f47fdb93658f32554d3a15445",
+      "bytes": 1453
+    },
+    "evidence/screens/armoriq-held-actions.png": {
+      "sha256": "daca9793b6fddc1d5b2943bdb01412999fb4b287566771dc7291fdef5306a1dd",
+      "bytes": 62903
+    },
+    "evidence/verify.txt": {
+      "sha256": "b38691e682687f3390d888a306e6f057856be010ef23b139de250af05c4c7b6c",
+      "bytes": 1616
+    }
+  }
+}

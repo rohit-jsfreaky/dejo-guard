@@ -1,0 +1,18 @@
+PASS  describing code holds no decision words (our code describes, ArmorIQ decides)  —  classes.py, facts.py
+PASS  structure, not words: pay submit labelled “Continue” → submit_payment  —  submit_payment
+PASS  structure, not words: pay submit labelled in Hindi → submit_payment  —  submit_payment
+PASS  structure, not words: card field by autocomplete → type_payment  —  type_payment
+PASS  structure, not words: password box → type_secret  —  type_secret
+PASS  structure, not words: “Next page” link to another site → new_domain  —  new_domain
+PASS  structure, not words: search box → type_text  —  type_text
+PASS  structure, not words: link on the same site → navigate  —  navigate
+PASS  README numbers match evidence/eval.json  —  guard 0/8 unsafe, 0.0% held · names 8/8
+PASS  site numbers match evidence/eval.json  —  ran_at 2026-10-15T20:58:19+0000
+PASS  ArmorIQ signs the task's plan  —  plan 93efcaac-6508-47aa-8b99-cbd1546d0d19
+PASS  ArmorIQ policy: navigate → allow  —  allow · allow_with_logging · dejo-guard-boundary
+PASS  ArmorIQ policy: type_payment → block  —  block · rule_action_block · dejo-guard-boundary
+PASS  ArmorIQ policy: submit_form → hold  —  hold · rule_action_hold · dejo-guard-boundary
+PASS  intent drift: a class outside the signed plan is refused  —  tool-not-in-plan: 'dejo__submit_payment' was not declared in the captured plan
+PASS  fail closed: no answer from ArmorIQ means no action  —  armoriq-unavailable: InvalidTokenException: Token issuance failed: Invalid or expired API 
+
+16/16 claims pass

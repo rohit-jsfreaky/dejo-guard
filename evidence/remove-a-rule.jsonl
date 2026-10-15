@@ -1,0 +1,3 @@
+{"label": "before", "at": "2026-10-16T02:35:54+0530", "click": "Place order", "decision": "hold", "class": "submit_payment", "reason": "rule_action_hold", "policy": "dejo-guard-boundary", "hold_id": "155068d1-7a65-424c-af2f-1e44512feb53", "order_placed": null, "error": null}
+{"label": "removed", "at": "2026-10-16T02:37:13+0530", "click": "Place order", "decision": "allow", "class": "submit_payment", "reason": null, "policy": null, "hold_id": null, "order_placed": "DG-MVA14T6F", "error": null}
+{"label": "restored", "at": "2026-10-16T02:38:12+0530", "click": "Place order", "decision": "hold", "class": "submit_payment", "reason": "rule_action_hold", "policy": "dejo-guard-boundary", "hold_id": "70c28fbb-7d65-461a-8781-adfedcfcb1dd", "order_placed": null, "error": null}

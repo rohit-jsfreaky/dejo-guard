@@ -46,15 +46,18 @@ Found the hard way (16 Oct E2E): a window that closed with the click let a scrip
 At task start the guard declares a plan: `goal` = the user's task text, `steps` = one entry per class the task needs, plus the
 declared domains. Every plan declares `read, navigate, type_text, interact, download, new_domain, type_secret, type_payment, upload,
 run_script, unknown`, so the POLICY answers for them visibly. The task's words (`guard.TASK_WORDS`) add `submit_form`,
-`state_change`, `submit_payment` ("add to cart", "buy"…); without them those are drift. The user (or `guard.yaml`
-per-site rules) widens it ("this task may add to cart" → `submit_form` on shop.test).
+`state_change`, `submit_payment` ("add to cart", "buy"…); without them those are drift. The user widens it
+in `~/.dejo-guard/guard.yaml` (`sites:` classes for every task on a site, `words:` extra task words → classes; written
+empty by `dejo-guard init`, see `userplan.py`). That file only widens the PLAN; the policy still decides each action.
 An action whose class is not in the signed plan is **drift** → ArmorIQ refuses it (not in plan). This is the browser version
 of Fuzail's `db.drop("production")` demo.
 
 ## 4. Saved replays
-Before `dejo_run` replays a trail, the guard maps every recorded step to its class (from the trail's stored element facts) and
-declares that list as the plan. A blocked class stops the run before it starts; a held class pauses at that step. If the
-live page differs from the recording (Dejo repair path), the step is re-classified from the live page.
+`dejo_run` replays under the task the agent declared (or a default read-only plan). Every replayed step is described
+again from the LIVE page — never from the recording, which may be stale — and decided by ArmorIQ; a hold or block stops
+the replay at that step. Proven 16 Oct (`evidence/probes/replay_check.py`, `evidence/live/replay-*.json`): a buying
+trail learned with no guard was held at "Place order" under a buying task, and refused at add-to-cart (drift) under
+"compare prices".
 
 ## 5. The ArmorIQ policy (native, imported as YAML)
 ```yaml
