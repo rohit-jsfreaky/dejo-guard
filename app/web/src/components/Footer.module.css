@@ -1,0 +1,173 @@
+/* Graphify / Linear: a dark footer, mono column heads, an "Ask AI" row, and the extruded dotted wordmark. */
+.foot {
+  background: var(--ink);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.wrap {
+  max-width: 1092px;
+  margin: 0 auto;
+  padding: 88px 24px 0;
+}
+.top {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 72px;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 21px var(--sans);
+  letter-spacing: -0.02em;
+}
+.brandCol p {
+  margin: 16px 0 20px;
+  font: 450 13px/1.55 var(--sans);
+  color: rgba(255, 255, 255, 0.5);
+}
+.social {
+  width: 32px;
+  height: 32px;
+  display: inline-grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+}
+.cols {
+  display: grid;
+  grid-template-columns: repeat(2, 228px);
+  gap: 32px;
+}
+.cols h3 {
+  font: 400 13px/1 var(--mono);
+  margin: 4px 0 16px;
+}
+.cols a {
+  display: block;
+  font: 450 13px/1 var(--sans);
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 14px;
+  transition: color 0.15s;
+}
+.cols a:hover {
+  color: #fff;
+}
+.ask {
+  margin: 48px 0 0 392px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ask > span {
+  font: 400 13px/1 var(--mono);
+  color: rgba(255, 255, 255, 0.7);
+}
+.ask > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.askBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 10px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+  font: 450 13px/1 var(--sans);
+  transition: border-color 0.15s;
+}
+.askBtn:hover {
+  border-color: rgba(255, 255, 255, 0.6);
+}
+.askBtn img {
+  display: block;
+  filter: invert(1);
+}
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 48px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font: 400 12px/1 var(--sans);
+  color: rgba(255, 255, 255, 0.55);
+}
+.markBox {
+  max-width: 1092px;
+  margin: 56px auto 0;
+  padding: 0 24px;
+}
+.mark {
+  display: block;
+  width: calc(100% + 40px);
+  height: auto;
+  margin: -20px;
+  overflow: visible;
+}
+.wm {
+  font: 600 372px var(--sans);
+  fill: var(--ink);
+  stroke: #fff;
+  stroke-width: 1;
+  stroke-dasharray: 1 2;
+  stroke-linecap: butt;
+}
+/* each layer marches .727s, alternating direction (Graphify's wmA..wmE) */
+.wm[data-layer="0"] {
+  animation: wmA 0.727s linear infinite;
+}
+.wm[data-layer="1"] {
+  animation: wmB 0.727s linear infinite;
+}
+.wm[data-layer="2"] {
+  animation: wmC 0.727s linear infinite;
+}
+.wm[data-layer="3"] {
+  animation: wmD 0.727s linear infinite;
+}
+.wm[data-layer="4"] {
+  animation: wmE 0.727s linear infinite;
+}
+@keyframes wmA {
+  to {
+    stroke-dashoffset: -3px;
+  }
+}
+@keyframes wmB {
+  to {
+    stroke-dashoffset: 2.97px;
+  }
+}
+@keyframes wmC {
+  to {
+    stroke-dashoffset: -2.94px;
+  }
+}
+@keyframes wmD {
+  to {
+    stroke-dashoffset: 2.91px;
+  }
+}
+@keyframes wmE {
+  to {
+    stroke-dashoffset: -2.88px;
+  }
+}
+@media (max-width: 900px) {
+  .top {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ask {
+    margin-left: 0;
+  }
+  .bottom {
+    flex-direction: column;
+  }
+}

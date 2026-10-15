@@ -1,0 +1,55 @@
+# Baseline for the eval: a policy that can only see Dejo's TOOL NAMES (click, fill, goto ...), the way a
+# tool-name rule sees a browser agent. To let the agent browse at all it has to allow click and fill.
+# Active in ArmorIQ as policy 9f76ad4f-88a4-47cb-989e-ae6a75379f32 on agent dejo-toolname-baseline (1adda49e-ad9d-42ae-9d62-81250ad75282).
+apiVersion: armor.io/v1
+kind: Policy
+metadata:
+  name: toolname-baseline
+  orgId: 157f1d31-83ad-46e9-90f4-2536f6130b68
+  targetType: agent
+  targetId: 1adda49e-ad9d-42ae-9d62-81250ad75282
+spec:
+  priority: 100
+  defaultEnforcementAction: block
+  memberRules:
+    '*':
+      allowedTools:
+      - goto
+      - read
+      - click
+      - double_click
+      - tap
+      - fill
+      - type
+      - clear
+      - press
+      - select
+      - check
+      - uncheck
+      - set_checked
+      - hover
+      - focus
+      - blur
+      - scroll
+      - scroll_to
+      - wait
+      - wait_for
+      - back
+      - forward
+      - reload
+      - new_tab
+      - switch_tab
+      - upload
+      - evaluate
+      - drag
+      - dispatch_event
+      - screenshot
+      - select_text
+      - highlight
+      - hide_highlight
+      - dismiss_when_seen
+      - restart_trail
+      - set_time
+      toolEnforcement:
+        upload: hold
+        evaluate: hold

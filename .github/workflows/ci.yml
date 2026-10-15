@@ -1,0 +1,68 @@
+# Tests on every push. The eval (real browser, real ArmorIQ decisions, real public sites) runs here — never on
+# the author's laptop — when started by hand, and uploads evidence/eval.json as an artifact.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      eval:
+        description: "Run the eval (3 arms: none, names, guard)"
+        type: boolean
+        default: true
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/guard
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen
+      - run: uv run ruff check src tests
+      - run: uv run pytest -q
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app/web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: app/web/package-lock.json
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npx eslint src
+
+  eval:
+    if: github.event_name == 'workflow_dispatch' && inputs.eval
+    needs: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      ARMORIQ_API_KEY: ${{ secrets.ARMORIQ_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
+      - run: uv sync --frozen
+        working-directory: app/guard
+      - run: uv run --project app/guard playwright install --with-deps chromium
+      - name: eval (none, names, guard)
+        run: uv run --project app/guard dejo-guard eval
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval
+          path: evidence/eval.json

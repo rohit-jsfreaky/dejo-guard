@@ -1,0 +1,52 @@
+.cta {
+  background: #fff;
+  padding: 0 0 120px;
+}
+.wrap {
+  max-width: 1092px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+.frame {
+  position: relative;
+  padding: 104px 24px;
+  text-align: center;
+}
+.dash {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.dash rect {
+  width: calc(100% - 1px);
+  height: calc(100% - 1px);
+  animation: march 0.727s linear infinite;
+}
+.frame h2 {
+  font: 520 48px/1.1 var(--mono);
+  letter-spacing: -1.8px;
+  margin-bottom: 18px;
+}
+.frame p {
+  font: 400 17px/1.6 var(--sans);
+  color: var(--ink-50);
+  max-width: 32em;
+  margin: 0 auto 32px;
+}
+.btns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+@media (max-width: 760px) {
+  .frame {
+    padding: 64px 16px;
+  }
+  .frame h2 {
+    font-size: 32px;
+    letter-spacing: -1px;
+  }
+}

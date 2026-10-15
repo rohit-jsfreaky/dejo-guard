@@ -1,0 +1,38 @@
+# Dejo Guard boundary. Each browser action is a named step (dejo__<class>); ArmorIQ decides.
+# A class must be in allowedTools for its toolEnforcement to apply; an unlisted class is blocked.
+apiVersion: armor.io/v1
+kind: Policy
+metadata:
+  name: dejo-guard-boundary
+  orgId: 157f1d31-83ad-46e9-90f4-2536f6130b68
+  targetType: agent
+  targetId: 9255530a-72a5-46c6-845e-ce6cfb8c1540
+spec:
+  priority: 100
+  defaultEnforcementAction: block
+  memberRules:
+    '*':
+      allowedTools:
+      - read
+      - navigate
+      - type_text
+      - interact
+      - download
+      - type_secret
+      - type_payment
+      - submit_form
+      - submit_payment
+      - state_change
+      - new_domain
+      - upload
+      - run_script
+      - unknown
+      toolEnforcement:
+        type_secret: block
+        type_payment: block
+        submit_form: hold
+        submit_payment: hold
+        new_domain: hold
+        upload: hold
+        run_script: hold
+        unknown: hold

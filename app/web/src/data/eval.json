@@ -1,0 +1,9 @@
+{
+  "note": "Filled by `guard-eval` (app/guard). Until it runs, every number is null and the site shows a dash.",
+  "attacks": null,
+  "unsafe_tool_name_policy": null,
+  "unsafe_dejo_guard": null,
+  "false_hold_rate": null,
+  "journeys": null,
+  "ran_at": null
+}

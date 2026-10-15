@@ -1,0 +1,116 @@
+/* Graphify "How it works", measured 2026-10-14: 32px Geist Mono titles, 40% ink when idle, white on a solid block
+   when active; 15px body; 32px gaps with hairline rules; a 400x400 cornered frame. */
+.how {
+  position: relative;
+  height: calc(500px + 1200px);
+  background: #fff;
+}
+.sticky {
+  position: sticky;
+  top: calc(50vh - 250px);
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.body {
+  width: 100%;
+  max-width: 1092px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+}
+.steps {
+  width: 364px;
+}
+.eyebrow {
+  margin-bottom: 48px;
+}
+.list {
+  display: flex;
+  flex-direction: column;
+}
+.stepWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+.stepWrap + .stepWrap {
+  margin-top: 32px;
+}
+.rule {
+  height: 1px;
+  background: var(--line);
+}
+.step h3 button {
+  all: unset;
+  cursor: pointer;
+  padding: 0 6px;
+  margin: 0 -6px;
+  transition: background 0.18s ease;
+}
+.step h3 {
+  font: 520 32px/1.2 var(--mono);
+  letter-spacing: -1.2px;
+  /* 32px text needs 3:1 (WCAG AA large) */
+  color: rgba(11, 13, 16, 0.5);
+  transition: color 0.18s ease;
+}
+.step[data-on] h3 {
+  color: #fff;
+}
+.step[data-on] h3 button {
+  background: var(--ink);
+}
+.step p {
+  font: 450 15px/1.5 var(--sans);
+  letter-spacing: -0.15px;
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.25s ease,
+    margin 0.35s ease;
+}
+.step[data-on] p {
+  max-height: 120px;
+  opacity: 1;
+  margin-top: 10px;
+}
+.frame {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 900px) {
+  .how {
+    height: auto;
+    padding: 72px 0;
+  }
+  .sticky {
+    position: static;
+    height: auto;
+  }
+  .body {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .steps {
+    width: 100%;
+  }
+  .step h3 {
+    font-size: 26px;
+  }
+  .frame {
+    width: min(400px, 100%);
+    height: auto;
+    aspect-ratio: 1;
+    align-self: center;
+  }
+}

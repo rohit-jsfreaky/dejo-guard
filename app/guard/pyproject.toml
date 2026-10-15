@@ -1,0 +1,44 @@
+[project]
+name = "dejo-guard"
+version = "0.1.0"
+description = "Your browser agent clicks; ArmorIQ decides what the click means. Dejo with ArmorIQ in front of every page action."
+readme = "README.md"
+license = "MIT"
+keywords = ["armoriq", "mcp", "browser-agent", "ai-agent-security", "claude-code", "playwright"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Security",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+]
+authors = [
+    { name = "rohit-jsfreaky", email = "rohitkashyapmrt@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "armoriq-sdk==0.6.10",
+    "dejo>=0.1.1",
+    "dejo-mcp>=0.1.1",
+    "httpx>=0.28.1",
+    "mcp>=1.29.1,<2",
+    "pyyaml>=6.0.3",
+]
+
+[project.urls]
+Homepage = "https://dejo-guard.vercel.app"
+Repository = "https://github.com/rohit-jsfreaky/dejo-guard"
+
+[project.scripts]
+dejo-guard = "dejo_guard:main"
+
+[build-system]
+requires = ["uv_build>=0.10.0,<0.11.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.1.1",
+    "ruff>=0.17.1",
+]

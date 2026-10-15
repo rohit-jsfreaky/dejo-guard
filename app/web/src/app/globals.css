@@ -1,0 +1,148 @@
+/* Tokens and the few pieces every section shares. Values come from the locked HTML designs. */
+:root {
+  --ink: #0b0d10;
+  --muted: #5a6068;
+  --line: rgba(11, 13, 16, 0.08);
+  /* small grey text: 0.6 ink is the lightest that keeps 4.5:1 on white (WCAG AA) */
+  --ink-45: rgba(11, 13, 16, 0.6);
+  --ink-50: rgba(11, 13, 16, 0.6);
+  /* chips: Inngest/Clerk researched colours */
+  --visit-bg: rgba(11, 13, 16, 0.06);
+  --visit-fg: #3f444b;
+  --done-bg: rgb(240, 253, 242);
+  --done-fg: rgb(21, 128, 42);
+  --learn-bg: rgba(245, 158, 11, 0.13);
+  --learn-fg: #a15c07;
+  /* blocked = slate with a strike (never red) */
+  --block-bg: rgba(71, 85, 105, 0.12);
+  --block-fg: #3b4656;
+  --grey-1: #8b9097;
+  --grey-2: #c9ccd1;
+  --sans: var(--font-geist), system-ui, sans-serif;
+  --mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: #fff;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--sans);
+  background: #fff;
+  overflow-x: clip;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 2px;
+}
+
+/* Graphify's eyebrow chip, reused by every section */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 2px;
+  font: 450 13px/13px var(--mono);
+  letter-spacing: -0.01em;
+  color: var(--ink-50);
+  background: rgba(11, 13, 16, 0.05);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 46px;
+  padding: 0 20px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font: 500 15px var(--sans);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btnInk {
+  background: var(--ink);
+  color: #fff;
+}
+.btnLine {
+  background: #fff;
+  border-color: rgba(11, 13, 16, 0.14);
+  color: var(--ink);
+}
+
+/* corner brackets (Graphify's frame); the parent sets position: relative */
+.corner {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  color: var(--ink);
+  display: block;
+}
+.corner svg {
+  display: block;
+}
+.corner.tl {
+  left: 0;
+  top: 0;
+  rotate: 90deg;
+}
+.corner.tr {
+  right: 0;
+  top: 0;
+  rotate: 180deg;
+}
+.corner.br {
+  right: 0;
+  bottom: 0;
+  rotate: 270deg;
+}
+.corner.bl {
+  left: 0;
+  bottom: 0;
+}
+
+/* Graphify's marching dashes: 4px dash, 4px gap, 8px per .727s */
+@keyframes march {
+  to {
+    stroke-dashoffset: -8;
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
