@@ -2,12 +2,19 @@
   "mcpServers": {
     "dejo-guard": {
       "command": "uv",
-      "args": ["run", "--no-sync", "--project", "D:/my_projects/hackathons/dejo-guard/app/guard", "dejo-guard"],
+      "args": [
+        "run",
+        "--no-sync",
+        "--project",
+        "D:/my_projects/hackathons/dejo-guard/app/guard",
+        "dejo-guard"
+      ],
       "env": {
         "DEJO_GUARD_HEADED": "1",
         "DEJO_PROFILE": "D:/my_projects/hackathons/dejo-guard/demo/.browser",
         "DEJO_PROFILES_DIR": "D:/my_projects/hackathons/dejo-guard/demo/.profiles",
-        "DEJO_DB": "D:/my_projects/hackathons/dejo-guard/demo/.dejo.db"
+        "DEJO_DB": "D:/my_projects/hackathons/dejo-guard/demo/.dejo.db",
+        "DEJO_GUARD_VIEWPORT": "920x600"
       }
     }
   }

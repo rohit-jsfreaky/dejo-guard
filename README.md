@@ -16,7 +16,7 @@ on the next try — [we did, and logged it](#proof-that-armoriq-decides).
 
 **[dejo-guard.vercel.app](https://dejo-guard.vercel.app)** · [For judges, 90 s](https://dejo-guard.vercel.app/judges) ·
 [Attack lab](https://dejo-guard.vercel.app/shop/lab) · [Live decision feed](https://dejo-guard.vercel.app/feed) ·
-Video: _added on submission_
+Video (88 s): https://youtu.be/bqabZg6663Y
 
 [Install](#install) · [Quick start](#quick-start) · [The finding](#the-finding) · [How it works](#how-it-works) ·
 [What a click means](#what-a-click-means) · [Proof](#proof-that-armoriq-decides) ·

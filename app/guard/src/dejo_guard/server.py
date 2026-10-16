@@ -177,12 +177,33 @@ def build_server(**dejo_options: Any) -> FastMCP:
 def run_stdio() -> None:
     from dejo.home import setting
 
+    # Dejo hard-codes a 1280x800 page (docs/DEJO-LIMITATIONS.md). DEJO_GUARD_VIEWPORT=WxH overrides it, so a headed
+    # window narrower than 1280 px shows the whole page instead of cutting it off.
+    size = setting("DEJO_GUARD_VIEWPORT")
+    if size and "x" in size:
+        import dejo.browser as dejo_browser
+
+        w, h = (int(v) for v in size.lower().split("x", 1))
+        dejo_browser.VIEWPORT.update({"width": w, "height": h})
+
+    headed = (setting("DEJO_GUARD_HEADED") or "") in ("1", "true", "yes")
+    if headed:
+        # Dejo launches Chrome with --no-sandbox, which puts a warning bar on every headed window (DEJO-LIMITATIONS 3).
+        import dejo.browser as dejo_browser
+
+        # Playwright adds the flag itself unless the launch asks for Chrome's sandbox.
+        launch_options = dejo_browser.Browser._launch_options
+        dejo_browser.Browser._launch_options = lambda self: {**launch_options(self), "chromium_sandbox": True}
+        # --test-type hides Chrome's "unsupported command-line flag" bar for Dejo's own flags.
+        if "--test-type" not in dejo_browser.QUIET_ARGS:
+            dejo_browser.QUIET_ARGS.append("--test-type")
+
     server = build_server(
         agent=setting("DEJO_AGENT"),
         profile=setting("DEJO_PROFILE"),
         profiles_dir=setting("DEJO_PROFILES_DIR"),
         db_path=setting("DEJO_DB"),
-        headless=(setting("DEJO_GUARD_HEADED") or "") not in ("1", "true", "yes"),
+        headless=not headed,
     )
     _log("ready — ArmorIQ decides every page action. Call guard_task first.")
     try:
