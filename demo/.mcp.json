@@ -10,11 +10,10 @@
         "dejo-guard"
       ],
       "env": {
-        "DEJO_GUARD_HEADED": "1",
         "DEJO_PROFILE": "D:/my_projects/hackathons/dejo-guard/demo/.browser",
         "DEJO_PROFILES_DIR": "D:/my_projects/hackathons/dejo-guard/demo/.profiles",
         "DEJO_DB": "D:/my_projects/hackathons/dejo-guard/demo/.dejo.db",
-        "DEJO_GUARD_VIEWPORT": "920x600"
+        "DEJO_GUARD_VIEWPORT": "1366x768"
       }
     }
   }

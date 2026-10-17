@@ -188,6 +188,14 @@ def run_stdio() -> None:
         w, h = (int(v) for v in size.lower().split("x", 1))
         dejo_browser.VIEWPORT.update({"width": w, "height": h})
 
+    if setting("DEJO_GUARD_RECORD"):
+        # Recording mode (stage.py): frames at 1920 px wide whatever the page size, like a 1080p screen.
+        import dejo.browser as dejo_browser
+
+        context_options = dejo_browser.Browser._context_options
+        scale = 1920 / dejo_browser.VIEWPORT["width"]
+        dejo_browser.Browser._context_options = lambda self: {**context_options(self), "device_scale_factor": scale}
+
     headed = (setting("DEJO_GUARD_HEADED") or "") in ("1", "true", "yes")
     if headed:
         # Dejo launches Chrome with --no-sandbox, which puts a warning bar on every headed window (DEJO-LIMITATIONS 3).

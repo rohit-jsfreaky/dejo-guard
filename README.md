@@ -16,7 +16,7 @@ on the next try — [we did, and logged it](#proof-that-armoriq-decides).
 
 **[dejo-guard.vercel.app](https://dejo-guard.vercel.app)** · [For judges, 90 s](https://dejo-guard.vercel.app/judges) ·
 [Attack lab](https://dejo-guard.vercel.app/shop/lab) · [Live decision feed](https://dejo-guard.vercel.app/feed) ·
-Video (88 s): https://youtu.be/bqabZg6663Y
+Video (3 min): https://youtu.be/56mq_IqjVYE
 
 [Install](#install) · [Quick start](#quick-start) · [The finding](#the-finding) · [How it works](#how-it-works) ·
 [What a click means](#what-a-click-means) · [Proof](#proof-that-armoriq-decides) ·
@@ -266,10 +266,14 @@ upstream: [`docs/UPSTREAM-ISSUES.md`](docs/UPSTREAM-ISSUES.md).
 git clone https://github.com/rohit-jsfreaky/dejo-guard && cd dejo-guard/app/guard
 uv sync
 uv run playwright install chromium
-uv run pytest                     # 47 tests, 14 of them in a real headless browser
+uv run pytest                     # 54 tests, 14 of them in a real headless browser
 uv run ruff check src tests
 cd ../.. && uv run --project app/guard dejo-guard verify
 ```
+
+**Recording mode** (how the demo video was filmed): `DEJO_GUARD_RECORD=<folder>` makes the guard draw a cursor
+and ArmorIQ's answer on each element it acts on, and saves Chrome's frames there. It only draws; it never changes a
+decision. Off unless set.
 
 ```
 app/guard   the Python package and MCP server (dejo-guard)

@@ -29,7 +29,7 @@ export default function Judges() {
         <ol className={d.steps}>
           <li className={d.li}>
             <span>
-              <b><a href="https://youtu.be/bqabZg6663Y">Watch the 88 s video</a></b>. Claude Code shops on our sandbox: browsing is
+              <b><a href="https://youtu.be/56mq_IqjVYE">Watch the 3-minute video</a></b>. Claude Code shops on our sandbox: browsing is
               allowed, “Place order” waits for approval in ArmorIQ, the card field is blocked.
             </span>
           </li>

@@ -29,6 +29,7 @@ from .armor import Decision, Gate
 from .classes import CLASSES, DEFAULT_PLAN, classify, network_class
 from .facts import ELEMENT_FACTS_JS, FRAME_PAYMENT_JS, PageFacts, from_element, site_of
 from .feed import Feed
+from .stage import stage
 
 # The user's task words → the extra classes that task may use. A fixed table, printed by
 # `dejo-guard plan "<task>"`, so the user can see exactly what a sentence unlocks. Anything
@@ -323,9 +324,13 @@ class GuardedSession(Session):
         redo = getattr(self, "_redo", None)
         page = self.browser.page
 
+        film = stage()  # draws nothing unless DEJO_GUARD_RECORD is set
         if spec.session_handled:
-            guard.check(guard.facts(page, action, value=value), intent=self._intent, redo=redo)
+            facts = guard.facts(page, action, value=value)
+            film.before(page, None)
+            decision = _shown(film, page, facts, lambda: guard.check(facts, intent=self._intent, redo=redo))
             self._do_here(action, value)
+            film.attach(self.browser.page)
             return None
 
         element = self.browser.describe(self._element_for(ref)) if spec.needs_target else None
@@ -335,14 +340,33 @@ class GuardedSession(Session):
         second = self.browser.locate(self._element_for(to)) if spec.needs_second_target else None
 
         facts = guard.facts(page, action, target, value)
-        decision = guard.check(facts, intent=self._intent, redo=redo)
-        with guard.watching(page, facts, decision.cls, intent=self._intent, redo=redo):
-            try:
-                self.last_result = actions.perform(action, page=page, target=target, value=value, second=second)
-            except actions.ActionNeedsMore as incomplete:
-                raise ActionFailed(str(incomplete)) from incomplete
-            self.browser.settle()
+        film.before(page, target)
+        decision = _shown(film, page, facts, lambda: guard.check(facts, intent=self._intent, redo=redo))
+        try:
+            with guard.watching(page, facts, decision.cls, intent=self._intent, redo=redo):
+                try:
+                    self.last_result = actions.perform(action, page=page, target=target, value=value, second=second)
+                except actions.ActionNeedsMore as incomplete:
+                    raise ActionFailed(str(incomplete)) from incomplete
+                self.browser.settle()
+        except GuardStop as stop:  # the click was allowed, but a write it sent was not: show that on the same element
+            film.decided(page, stop.decision, stop.decision.cls, facts.words)
+            film.after(page)
+            raise
+        film.after(self.browser.page)
         return element
+
+
+def _shown(film: Any, page: Any, facts: PageFacts, ask: Any) -> Decision:
+    """Ask ArmorIQ; in recording mode, show its answer on the element either way."""
+    try:
+        decision = ask()
+    except GuardStop as stop:
+        film.decided(page, stop.decision, stop.decision.cls, facts.words)
+        film.after(page)
+        raise
+    film.decided(page, decision, decision.cls, facts.words)
+    return decision
 
 
 class GuardedExecutor(Executor):

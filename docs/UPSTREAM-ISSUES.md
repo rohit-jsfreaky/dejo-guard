@@ -65,3 +65,14 @@ YAML with the org id from `armoriq login` and prints the two dashboard steps.
 https://github.com/rohit-jsfreaky/dejo-guard/blob/main/docs/FINDING.md · smaller things we hit on the way: the
 docs' example policy still has `status: active`, which the importer rejects (the UI only says "check YAML syntax");
 `toolEnforcement` applies only to tools also listed in `allowedTools`.
+
+## Note 3 — ArmorIQ Tools (Policy Studio), found 17 Oct 2026
+
+1. **The folder access rule refuses Windows paths.** `C:/Users/<me>/.dejo-guard` and `C:\Users\<me>\.dejo-guard` both
+   fail with "Use a canonical absolute folder path without . or .. segments"; only POSIX paths (`/Users/...`) save.
+   Claude Code on Windows passes `C:\...` paths to its file tools, so a folder rule can't protect anything there.
+2. **After a reload, tool rules move to "scoped or advanced rules preserved unchanged".** Rules saved from the simple
+   editor (`forbid Bash`, `forbid WebFetch`) are active and enforced, but the editor shows "No rules" and lists them
+   only as raw JSON, which makes it look as if the save failed.
+3. **A new tool rule starts with `Read` already typed** in the tool box, so typing a name appends to it
+   (`ReadBash`). Easy to publish a rule that matches nothing.
