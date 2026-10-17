@@ -10,7 +10,6 @@
 from __future__ import annotations
 
 import argparse
-import contextlib
 import json
 import sys
 import time
@@ -115,16 +114,10 @@ def _share(site: str, label: str | None) -> int:
 def _init(agent_uuid: str | None = None) -> int:
     """Check the setup, fill in what `armoriq login` already knows, and print the two dashboard steps left."""
     ok = True
-    key = config.setting("ARMORIQ_API_KEY")
-    org = config.setting("ARMORIQ_ORG_ID")
-    creds = None
-    with contextlib.suppress(Exception):  # no `armoriq login` yet is fine: the lines below say what is missing
-        from armoriq_sdk.credentials import load_credentials
-
-        creds = load_credentials()
-    key = key or getattr(creds, "apiKey", None)
-    org = org or getattr(creds, "orgId", None) or None
-    print(f"ArmorIQ key ........ {'found' if key else 'MISSING — run `armoriq login` (or set ARMORIQ_API_KEY)'}")
+    key, source = config.api_key()
+    org = config.setting("ARMORIQ_ORG_ID") or (
+        (config.saved_for_backend() or {}).get("orgId") if source == str(config.login_file()) else None) or None
+    print(f"ArmorIQ key ........ {f'found ({source})' if key else f'MISSING: {source}. Run `armoriq login` or set ARMORIQ_API_KEY'}")
     print(f"ArmorIQ org ........ {org or 'unknown — `armoriq login` fills it, or set ARMORIQ_ORG_ID'}")
     ok &= bool(key)
     print(f"ArmorIQ agent ...... {config.agent_id()}")

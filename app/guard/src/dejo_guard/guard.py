@@ -26,7 +26,7 @@ from dejo.operations import ActionFailed, Session
 
 from . import userplan
 from .armor import Decision, Gate
-from .classes import DEFAULT_PLAN, classify, network_class
+from .classes import CLASSES, DEFAULT_PLAN, classify, network_class
 from .facts import ELEMENT_FACTS_JS, FRAME_PAYMENT_JS, PageFacts, from_element, site_of
 from .feed import Feed
 
@@ -120,7 +120,10 @@ class Guard:
         self.feed.write({"task_id": task.id, "goal": goal, "action": "plan", "cls": ",".join(task.classes),
                          "decision": "refused" if task.refused else "signed", "reason": task.refused,
                          "plan_id": task.plan_id, "because": f"sites: {', '.join(sorted(sites)) or 'any'}"})
+        # Said plainly for the agent: classes in the plan are still decided by ArmorIQ's policy (a card field
+        # is in every plan so the policy can block it visibly); classes left out are refused as drift.
         return {"task_id": task.id, "plan_id": task.plan_id, "classes": list(task.classes),
+                "drift_if":[c for c in CLASSES if c not in task.classes],
                 "sites": sorted(task.sites), "refused": task.refused}
 
     def ensure_task(self, intent: str, url: str | None) -> None:

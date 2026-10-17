@@ -135,7 +135,9 @@ def build_server(**dejo_options: Any) -> FastMCP:
         if result["refused"]:
             return {"ok": False, **result, "next": "ArmorIQ refused this plan. Tell the user why."}
         return {"ok": True, **result,
-                "next": "Plan signed by ArmorIQ. Go ahead — dejo_run first, then explore if unknown."}
+                "next": ("Plan signed by ArmorIQ. `classes` are in the plan; ArmorIQ's policy still allows, "
+                         "holds or blocks each one. `drift_if` would be refused as intent drift. "
+                         "Go ahead — dejo_run first, then explore if unknown.")}
 
     @server.tool()
     def guard_wait(hold_id: str, seconds: int = 90) -> dict[str, Any]:

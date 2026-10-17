@@ -24,7 +24,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .classes import DEFAULT_PLAN
-from .config import STEP_PREFIX, agent_id, load_env, requester
+from .config import STEP_PREFIX, agent_id, api_key, load_env, requester
 
 
 @dataclass
@@ -68,7 +68,10 @@ class Gate:
         if self._client is None:
             from armoriq_sdk import ArmorIQClient
 
-            self._client = ArmorIQClient(agent_id=self.agent, user_id=self.requester)
+            key, source = api_key()
+            if key is None:  # fail closed, with the reason the user needs
+                raise RuntimeError(f"no ArmorIQ key for Dejo Guard: {source}")
+            self._client = ArmorIQClient(api_key=key, agent_id=self.agent, user_id=self.requester)
         return self._client
 
     # ------------------------------------------------------------------ plan

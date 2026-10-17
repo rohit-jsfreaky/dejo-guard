@@ -93,6 +93,27 @@ dejo-guard feed                                  # the latest decisions
 dejo-guard share                                 # a live web page of your decisions
 ```
 
+### Two checkpoints: add ArmorClaude
+
+Dejo Guard decides what each click on a page means. [ArmorClaude](https://github.com/armoriq/armorClaude), from
+ArmorIQ Tools, sits one level up and checks every tool call Claude Code makes. Run both together:
+
+```bash
+curl -fsSL https://armoriq.ai/install_armorclaude_dev.sh | bash   # the command tools.armoriq.ai shows
+```
+
+Then, once, in Claude Code: `/armor mcp approve dejo-guard`. With both installed, a run goes like this:
+
+1. **ArmorClaude** makes Claude register an intent plan for the whole session. Every tool call, including each
+   `dejo_act`, is checked against that plan and recorded as a session at [tools.armoriq.ai](https://tools.armoriq.ai).
+2. **Dejo Guard** has ArmorIQ sign a second plan for the page actions. Each click is still allowed, held or blocked
+   by your policy on [platform.armoriq.ai](https://platform.armoriq.ai).
+
+Each product keeps its own key. ArmorClaude saves its login to `~/.armoriq/credentials.json`. Dejo Guard uses
+`ARMORIQ_API_KEY` first. From that file it takes only a login made for its own backend, so an ArmorClaude key is
+never sent to the platform. ArmorClaude also counts tokens for all your Claude Code sessions (not your prompts) while
+you are signed in; set `disable_usage_sync` in `/plugin configure` to stop that.
+
 ## The finding
 
 The same 8 attack pages and the same 68 ordinary browsing steps on real sites (Wikipedia, GitHub, Python docs, MDN,
@@ -213,6 +234,11 @@ and check the agent id inside it is your `dejo-guard-agent`.
 **Everything is blocked with `armoriq-unavailable`.**
 ArmorIQ didn't answer, so the guard did nothing — that is fail-closed, on purpose. Run `armoriq whoami`. If you set
 `ARMORIQ_API_KEY` yourself, make sure it is only the key: an inline `# comment` pasted along with it breaks every call.
+
+**`no ArmorIQ key for Dejo Guard: … only holds keys for …`**
+Another ArmorIQ product (ArmorClaude, ArmorCodex) saved its login in `~/.armoriq/credentials.json`, and none of the
+logins there is for the platform. Set `ARMORIQ_API_KEY` in `~/.dejo-guard/.env`, or run `armoriq login`. `dejo-guard
+init` shows which key it found and where.
 
 **A hold never turns into an approval.**
 Approve it in ArmorIQ → **Held Actions**, then let your agent call `guard_wait`. ArmorIQ refuses to let you approve a
